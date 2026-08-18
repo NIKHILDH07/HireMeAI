@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # HireMeAI 🤖
 
 > **An AI-powered portfolio that transforms a traditional resume into an interactive hiring experience through a conversational AI Twin.**
@@ -674,3 +675,5 @@ Your support is appreciated! 🚀
 <p align="center">
   Built with ❤️ using React, FastAPI, Groq, and Llama 3.3
 </p>
+=======
+>>>>>>> Stashed changes
