@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+
 from pathlib import Path
 from pypdf import PdfReader
 from docx import Document
@@ -44,9 +46,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-RESUME_PATH = Path(__file__).parent / "DevResume.pdf"
-if not RESUME_PATH.exists():
-    RESUME_PATH = Path("DevResume.pdf")
+def get_resume_path() -> Path:
+    candidates = [
+        Path(__file__).parent / "Nikhil_Hoskatta_Resume.pdf",
+        Path(__file__).parent / "Nikhil_Hoskatta.Resume (1).pdf",
+        Path("backend/Nikhil_Hoskatta_Resume.pdf"),
+        Path("backend/Nikhil_Hoskatta.Resume (1).pdf"),
+        Path("Nikhil_Hoskatta_Resume.pdf"),
+        Path("Nikhil_Hoskatta.Resume (1).pdf"),
+        Path(__file__).parent / "DevResume.pdf",
+        Path("DevResume.pdf"),
+    ]
+    for p in candidates:
+        if p.exists() and p.is_file():
+            return p.resolve()
+    # Check directory for any matching pdf
+    for pattern in ["*Resume*.pdf", "*.pdf"]:
+        matches = list(Path(__file__).parent.glob(pattern))
+        if matches:
+            return matches[0].resolve()
+    return (Path(__file__).parent / "Nikhil_Hoskatta_Resume.pdf").resolve()
+
+RESUME_PATH = get_resume_path()
 
 
 #parse resume
@@ -56,6 +77,12 @@ class Experience(BaseModel):
     duration: str | None = None
     description: str | None = None
     skills_used: list[str] = []
+
+class Project(BaseModel):
+    name: str | None = None
+    technologies: list[str] = []
+    description: str | None = None
+    highlights: list[str] = []
 
 class Resume(BaseModel):
     name: str | None = None
@@ -67,7 +94,7 @@ class Resume(BaseModel):
     skills: list[str] = []
     experiences: list[Experience] = []
     education: list[str] = []
-    projects: list[str] = []
+    projects: list[Project | str] = []
     certifications: list[str] = []
 
 resume_schema = Resume.model_json_schema()
@@ -124,6 +151,54 @@ say
 
     return response.choices[0].message.content
 
+def ask_candidate_stream(question: str, resume: Resume):
+    if not client:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured on the backend server.")
+
+    system_prompt = f"""
+You are an AI assistant representing a job candidate.
+
+Below is everything you know about the candidate.
+
+{resume.model_dump_json(indent=2)}
+
+Rules:
+
+1. Answer only using this information.
+
+2. Never hallucinate.
+
+3. If information is unavailable,
+say
+
+"I don't have enough information to answer that."
+
+4. Be professional.
+
+5. Answer as if HR is interviewing this candidate.
+"""
+
+    stream = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": question
+            }
+        ],
+        stream=True
+    )
+
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content or ""
+        if delta:
+            yield delta
+
+
 def parse_resume(resume_text):
     if not client:
         raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured on the backend server.")
@@ -159,6 +234,7 @@ def parse_resume(resume_text):
     3. If a list has no information, return an empty list.
     4. Include internships inside experiences.
     5. Extract skills mentioned across the entire resume.
+    6. For projects, extract the project name, technologies used, overview description, and all key highlights/metrics.
     """
     user_prompt = f"""
     Parse the following resume:
@@ -193,24 +269,57 @@ def read_pdf(file_path):
             text += page_text + "\n"
     return text
 
-@app.get("/")
+_cached_resume: Resume | None = None
+_cached_file_path: Path | None = None
+_cached_file_mtime: float | None = None
 
+def get_parsed_resume() -> Resume:
+    global _cached_resume, _cached_file_path, _cached_file_mtime
+    current_path = get_resume_path()
+    current_mtime = current_path.stat().st_mtime if current_path.exists() else None
+
+    if _cached_resume is None or _cached_file_path != current_path or _cached_file_mtime != current_mtime:
+        if not current_path.exists():
+            raise HTTPException(status_code=500, detail=f"Resume file not found at {current_path}")
+        resume_text = read_pdf(current_path)
+        _cached_resume = parse_resume(resume_text)
+        _cached_file_path = current_path
+        _cached_file_mtime = current_mtime
+    return _cached_resume
+
+@app.get("/")
 def home():
-    resume_text=read_pdf(RESUME_PATH)
-    resume=parse_resume(resume_text)
+    resume = get_parsed_resume()
     print(resume.model_dump_json(indent=2))
-    return{
-        "message":"resume parsed"
+    return {
+        "message": "resume parsed"
     }
+
+@app.get("/resume")
+def download_resume():
+    current_path = get_resume_path()
+    if not current_path.exists():
+        raise HTTPException(status_code=404, detail="Resume file not found")
+    return FileResponse(
+        path=current_path,
+        filename="Nikhil_Hoskatta_Resume.pdf",
+        media_type="application/pdf"
+    )
 
 @app.post("/chat")
+def chat(request: ChatRequest):
+    if not client:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured on the backend server.")
+    resume = get_parsed_resume()
+    return StreamingResponse(
+        ask_candidate_stream(request.question, resume),
+        media_type="text/plain; charset=utf-8",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        }
+    )
 
-def chat(request:ChatRequest):
-    resume_text=read_pdf(RESUME_PATH)
-    resume=parse_resume(resume_text)
-    answer = ask_candidate(request.question,resume)
-    return{
-        "answer" : answer
-    }
 
 

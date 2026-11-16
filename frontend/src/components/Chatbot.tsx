@@ -72,7 +72,7 @@ const AlertIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) 
 
 const STARTER_QUESTIONS = [
   "What are Nikhil's strongest technical skills & tech stack?",
-  "Tell me about the Memory Decay Simulator project.",
+  "Tell me about the Protein Structure Prediction & Disease Mutation Analysis project.",
   "What is Nikhil's experience with Python, FastAPI, and AI?",
   "What certifications and education does Nikhil hold?",
 ];
@@ -118,17 +118,29 @@ export const Chatbot: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
+    const aiMessageId = `ai-${Date.now()}`;
+    let aiMessageCreated = false;
+
     try {
-      const response = await sendChatMessage(text);
-
-      const aiMessage: ChatMessage = {
-        id: `ai-${Date.now()}`,
-        role: 'assistant',
-        content: response.answer,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, aiMessage]);
+      await sendChatMessage(text, (accumulatedText) => {
+        if (!aiMessageCreated) {
+          aiMessageCreated = true;
+          setIsLoading(false);
+          const aiMessage: ChatMessage = {
+            id: aiMessageId,
+            role: 'assistant',
+            content: accumulatedText,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, aiMessage]);
+        } else {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId ? { ...msg, content: accumulatedText } : msg
+            )
+          );
+        }
+      });
     } catch (err: unknown) {
       let displayError = 'An error occurred while communicating with the AI service.';
 
@@ -140,15 +152,25 @@ export const Chatbot: React.FC = () => {
 
       setErrorMessage(displayError);
 
-      const errorAiMessage: ChatMessage = {
-        id: `error-${Date.now()}`,
-        role: 'assistant',
-        content: `Error: ${displayError}`,
-        timestamp: new Date(),
-        isError: true,
-      };
+      if (aiMessageCreated) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === aiMessageId
+              ? { ...msg, content: `${msg.content}\n\n[Error: ${displayError}]`, isError: true }
+              : msg
+          )
+        );
+      } else {
+        const errorAiMessage: ChatMessage = {
+          id: `error-${Date.now()}`,
+          role: 'assistant',
+          content: `Error: ${displayError}`,
+          timestamp: new Date(),
+          isError: true,
+        };
 
-      setMessages((prev) => [...prev, errorAiMessage]);
+        setMessages((prev) => [...prev, errorAiMessage]);
+      }
     } finally {
       setIsLoading(false);
       setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100);

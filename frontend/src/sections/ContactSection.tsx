@@ -154,7 +154,8 @@ export const ContactSection: React.FC = () => {
           {/* Centered Curriculum Vitae Card (Same dimensions as other cards) */}
           <div className="flex justify-center">
             <a
-              href="/DevResume.pdf"
+              href="/Nikhil_Hoskatta_Resume.pdf"
+              download="Nikhil_Hoskatta_Resume.pdf"
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-[calc(50%-0.5rem)] liquid-glass liquid-glass-hover p-6 rounded-[1.25rem] flex items-center justify-between group"

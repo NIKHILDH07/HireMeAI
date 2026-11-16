@@ -111,7 +111,8 @@ export const Navbar: React.FC = () => {
             ))}
             <div className="pt-2 border-t border-white/10">
               <a
-                href="/DevResume.pdf"
+                href="/Nikhil_Hoskatta_Resume.pdf"
+                download="Nikhil_Hoskatta_Resume.pdf"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setMobileOpen(false)}

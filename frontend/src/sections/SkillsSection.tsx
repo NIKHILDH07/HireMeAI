@@ -52,32 +52,32 @@ export const SkillsSection: React.FC = () => {
     {
       category: 'Languages & Core',
       icon: TerminalIcon,
-      skills: ['Python', 'Java', 'JavaScript', 'SQL'],
+      skills: ['Python', 'Java', 'JavaScript', 'HTML/CSS', 'SQL'],
       desc: 'Object-oriented programming, algorithmic structures, and scripting.',
     },
     {
       category: 'Full-Stack & APIs',
       icon: GlobeIcon,
-      skills: ['FastAPI', 'React.js', 'Node.js', 'Tailwind CSS', 'Vite', 'RESTful APIs'],
+      skills: ['FastAPI', 'React.js', 'Node.js', 'Tailwind CSS', 'REST APIs', 'JSON'],
       desc: 'Asynchronous APIs, component architectures, and responsive interfaces.',
     },
     {
-      category: 'Machine Learning & Data',
+      category: 'Machine Learning & AI',
       icon: CpuIcon,
-      skills: ['Scikit-learn', 'PyTorch', 'XGBoost', 'Pandas', 'NumPy', 'Matplotlib'],
-      desc: 'Predictive mathematical modeling, data pipelines, and retention curve simulations.',
+      skills: ['PyTorch', 'Hugging Face', 'Scikit-learn', 'NumPy', 'Pandas', 'RAG Systems'],
+      desc: 'Protein language modeling, neural networks, predictive analytics, and RAG.',
     },
     {
-      category: 'Cloud & Databases',
+      category: 'Cloud & DevOps',
       icon: DatabaseIcon,
-      skills: ['AWS', 'Microsoft Azure', 'MongoDB', 'SQL', 'Git', 'GitHub'],
-      desc: 'Cloud compute services, document datastores, relational schemas, and CI/CD.',
+      skills: ['AWS', 'Microsoft Azure', 'Docker', 'Docker Compose', 'MongoDB', 'Git / GitHub'],
+      desc: 'Cloud compute services, containerization, document & relational schemas, and CI/CD.',
     },
     {
-      category: 'AI & Automation Tools',
+      category: 'Tools & Automation',
       icon: LayersIcon,
-      skills: ['Groq LLaMA', 'Prompt Engineering', 'LLM Systems', 'PowerBI', 'N8N Automation'],
-      desc: 'LLM orchestration, structured output parsing, and enterprise analytics.',
+      skills: ['Power BI', 'n8n Automation', 'Claude Code', 'Microsoft Copilot', 'Prompt Engineering'],
+      desc: 'Workflow automation, structured LLM engineering, and business intelligence.',
     },
   ];
 

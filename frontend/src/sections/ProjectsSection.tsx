@@ -29,14 +29,14 @@ export const ProjectsSection: React.FC = () => {
             Projects.
           </h2>
           <p className="text-sm sm:text-base text-white/70 font-light leading-relaxed">
-            Full-stack machine learning applications, predictive retention simulators, and automated parsing pipelines.
+            Full-stack AI web applications, protein language models, and automated resume parsing pipelines.
           </p>
         </div>
 
         {/* Projects Bento Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          {/* Project 1: Memory Decay Simulator */}
+          {/* Project 1: Protein Structure Prediction & Disease Mutation Analysis */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -48,10 +48,10 @@ export const ProjectsSection: React.FC = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-white/50 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
-                    FULL-STACK AI APPLICATION
+                    FULL-STACK AI WEB APPLICATION
                   </span>
                   <h3 className="font-heading italic text-3xl sm:text-4xl text-white font-normal pt-1">
-                    Memory Decay Simulator
+                    Protein Structure Prediction & Disease Mutation Analysis
                   </h3>
                 </div>
 
@@ -67,7 +67,7 @@ export const ProjectsSection: React.FC = () => {
               </div>
 
               <p className="text-white/80 text-sm sm:text-base leading-relaxed font-light">
-                An interactive cognitive retention simulator modeling the <strong className="text-white font-normal">Ebbinghaus Forgetting Curve</strong>. Combines machine learning algorithms (XGBoost, Scikit-learn) with Groq LLaMA to forecast knowledge decay rates and formulate personalized study schedules.
+                A full-stack web application with a Python FastAPI REST API backend and a React.js frontend that predicts 3D protein structures with ESMFold and analyses how single-point amino acid mutations affect protein structure and function.
               </p>
 
               <div className="space-y-2 pt-2">
@@ -75,22 +75,22 @@ export const ProjectsSection: React.FC = () => {
                 <ul className="space-y-2 text-xs sm:text-sm text-white/70 font-light">
                   <li className="flex items-start gap-2">
                     <CheckIcon className="w-3.5 h-3.5 text-white flex-shrink-0 mt-1" />
-                    <span>Engineered end-to-end full-stack platform with React, Vite, FastAPI, and MongoDB.</span>
+                    <span>Fine-tuned an ESM-2 (8M) protein language model in PyTorch on 9,752 human protein sequences, lowering loss from 6.58 to 1.42.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckIcon className="w-3.5 h-3.5 text-white flex-shrink-0 mt-1" />
-                    <span>Embedded Groq LLaMA 3.1 for automated personalized study recommendations.</span>
+                    <span>Implemented Log-Likelihood Ratio (LLR) pathogenicity scoring and integrated NCBI ClinVar API for clinical mutation evidence.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckIcon className="w-3.5 h-3.5 text-white flex-shrink-0 mt-1" />
-                    <span>Implemented secure JWT authentication and user retention tracking telemetry.</span>
+                    <span>Interactive dashboard with 3Dmol.js 3D visualization and Recharts analytics; containerized with Docker Compose.</span>
                   </li>
                 </ul>
               </div>
             </div>
 
             <div className="pt-6 border-t border-white/5 flex flex-wrap gap-1.5">
-              {['FastAPI', 'React', 'Groq LLaMA', 'MongoDB', 'PyTorch', 'XGBoost', 'JWT'].map((tag, i) => (
+              {['Python', 'FastAPI', 'React.js', 'PyTorch', 'Hugging Face', 'ESMFold', '3Dmol.js', 'Docker', 'ClinVar API'].map((tag, i) => (
                 <span key={i} className="px-2.5 py-1 text-[11px] font-mono text-white/80 rounded-lg bg-white/[0.04] border border-white/5">
                   {tag}
                 </span>
@@ -110,7 +110,7 @@ export const ProjectsSection: React.FC = () => {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-white/50 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
-                    EXTRACTION ENGINE
+                    SMART EXTRACTION ENGINE
                   </span>
                   <h3 className="font-heading italic text-3xl sm:text-4xl text-white font-normal pt-1">
                     AI Resume Parser
@@ -129,7 +129,7 @@ export const ProjectsSection: React.FC = () => {
               </div>
 
               <p className="text-white/80 text-sm sm:text-base leading-relaxed font-light">
-                An automated parsing engine converting unstructured resume documents (PDF, DOCX) into validated, structured candidate profiles and schemas via LLM extraction.
+                An AI-powered resume parser in Python automating information extraction from PDF and DOCX resumes into structured candidate profiles and validated JSON output.
               </p>
 
               <div className="space-y-2 pt-2">
@@ -137,18 +137,18 @@ export const ProjectsSection: React.FC = () => {
                 <ul className="space-y-2 text-xs sm:text-sm text-white/70 font-light">
                   <li className="flex items-start gap-2">
                     <CheckIcon className="w-3.5 h-3.5 text-white flex-shrink-0 mt-1" />
-                    <span>Semantic candidate data normalization recognizing varied section formats.</span>
+                    <span>Automated extraction logic leveraging Google Gemini API and structured prompt orchestration.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckIcon className="w-3.5 h-3.5 text-white flex-shrink-0 mt-1" />
-                    <span>Integrated PyPDF, python-docx, and Pydantic validation schemas.</span>
+                    <span>Implemented parsing pipelines with PyPDF2, python-docx, and regular expressions for robust document ingest.</span>
                   </li>
                 </ul>
               </div>
             </div>
 
             <div className="pt-6 border-t border-white/5 flex flex-wrap gap-1.5">
-              {['Python', 'FastAPI', 'LLM Engineering', 'PyPDF', 'Pydantic', 'JSON Schema'].map((tag, i) => (
+              {['Python', 'Google Gemini API', 'PyPDF2', 'python-docx', 'Regex', 'JSON', 'Git'].map((tag, i) => (
                 <span key={i} className="px-2.5 py-1 text-[11px] font-mono text-white/80 rounded-lg bg-white/[0.04] border border-white/5">
                   {tag}
                 </span>

@@ -35,20 +35,20 @@ export const AboutSection: React.FC = () => {
     {
       title: 'AI & Machine Learning',
       icon: BrainIcon,
-      tags: ['Python', 'PyTorch', 'Groq LLaMA', 'LLM Engineering', 'Predictive Modeling'],
-      desc: 'Developing fine-tuned prompt pipelines, semantic LLM orchestration, and machine learning models for predictive analysis and retention modeling.',
+      tags: ['Python', 'PyTorch', 'Hugging Face', 'ESM-2', 'RAG Systems'],
+      desc: 'Fine-tuning protein language models, semantic LLM orchestration, and machine learning pipelines for predictive analysis and structure analysis.',
     },
     {
       title: 'Full-Stack Engineering',
       icon: CodeIcon,
-      tags: ['React', 'FastAPI', 'TypeScript', 'JavaScript', 'MongoDB', 'RESTful APIs'],
+      tags: ['React', 'FastAPI', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'REST APIs'],
       desc: 'Architecting high-performance asynchronous API backends with FastAPI and building responsive, fluid frontends with React and modern UI systems.',
     },
     {
       title: 'Cloud & Automation',
       icon: CloudIcon,
-      tags: ['AWS', 'Azure', 'N8N Automation', 'PowerBI', 'SQL Schemas'],
-      desc: 'Cloud infrastructure provisioning, automated data extraction workflows, document datastores, and executive business analytics.',
+      tags: ['AWS', 'Azure', 'Docker', 'Power BI', 'n8n Automation'],
+      desc: 'Cloud infrastructure provisioning, automated data extraction workflows, containerization, and business analytics.',
     },
   ];
 
@@ -126,7 +126,7 @@ export const AboutSection: React.FC = () => {
                 I specialize in bridging the gap between theoretical machine learning models and production full-stack software. From architecting async backend APIs with FastAPI to training and fine-tuning predictive algorithms, I engineer systems designed for low latency and high accuracy.
               </p>
               <p className="text-white/70 text-sm leading-relaxed font-light">
-                My work spans intelligent simulation engines like the Memory Decay Simulator and automated unstructured data extractors like the AI Resume Parser.
+                My work spans intelligent full-stack AI applications like Protein Structure Prediction & Disease Mutation Analysis and automated unstructured data extractors like the AI Resume Parser.
               </p>
             </div>
 

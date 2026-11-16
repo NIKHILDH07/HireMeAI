@@ -17,13 +17,13 @@ const ArrowDownIcon: React.FC<{ className?: string }> = ({ className = 'w-3.5 h-
 
 export const Hero: React.FC = () => {
   const capabilities = [
-    { label: 'AI / ML', desc: 'Groq LLaMA & ML models' },
+    { label: 'AI / ML', desc: 'PyTorch, Hugging Face & LLMs' },
     { label: 'FULL STACK', desc: 'FastAPI, React & Python' },
-    { label: 'CLOUD', desc: 'AWS & Oracle certified' },
+    { label: 'CLOUD & DEVOPS', desc: 'AWS, Azure & Docker' },
     { label: 'AUTOMATION', desc: 'Pipelines & Workflows' },
   ];
 
-  const technologies = ['React', 'Python', 'FastAPI', 'Groq', 'AWS', 'PyTorch', 'MongoDB'];
+  const technologies = ['React', 'Python', 'FastAPI', 'PyTorch', 'Docker', 'AWS', 'MongoDB'];
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-8 px-5 sm:px-8 lg:px-16 select-none bg-transparent">

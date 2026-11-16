@@ -17,9 +17,12 @@ export class ApiClientError extends Error {
 }
 
 /**
- * Sends a candidate interview question to the FastAPI /chat endpoint.
+ * Sends a candidate interview question to the FastAPI /chat endpoint and progressively streams the response.
  */
-export async function sendChatMessage(question: string): Promise<ChatResponse> {
+export async function sendChatMessage(
+  question: string,
+  onChunk?: (accumulated: string) => void
+): Promise<ChatResponse> {
   const trimmed = question.trim();
   if (!trimmed) {
     throw new ApiClientError('Question cannot be empty.', 400);
@@ -35,7 +38,6 @@ export async function sendChatMessage(question: string): Promise<ChatResponse> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
       },
       body: JSON.stringify(payload),
       signal: controller.signal,
@@ -63,21 +65,40 @@ export async function sendChatMessage(question: string): Promise<ChatResponse> {
       throw new ApiClientError(errorMessage, response.status);
     }
 
-    const data = await response.json();
-
-    if (!data || typeof data !== 'object') {
-      throw new ApiClientError('Received invalid data format from server.');
+    if (!response.body) {
+      throw new ApiClientError('Server returned an empty response body.');
     }
 
-    if (typeof data.answer !== 'string') {
-      throw new ApiClientError('Server returned an unexpected response structure.');
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let accumulated = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const textChunk = decoder.decode(value, { stream: true });
+      if (textChunk) {
+        accumulated += textChunk;
+        if (onChunk) {
+          onChunk(accumulated);
+        }
+      }
     }
 
-    if (!data.answer.trim()) {
+    const finalChunk = decoder.decode();
+    if (finalChunk) {
+      accumulated += finalChunk;
+      if (onChunk) {
+        onChunk(accumulated);
+      }
+    }
+
+    if (!accumulated.trim()) {
       throw new ApiClientError('AI returned an empty response. Please try rephrasing your question.');
     }
 
-    return { answer: data.answer };
+    return { answer: accumulated };
+
   } catch (err: unknown) {
     clearTimeout(timeoutId);
 

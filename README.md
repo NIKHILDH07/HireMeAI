@@ -118,7 +118,7 @@ The AI Twin responds using the structured candidate profile generated from the r
                      │                             │
                      ▼                             ▼
           ┌───────────────────┐         ┌───────────────────┐
-          │   DevResume.pdf   │         │     Groq API      │
+          │ Nikhil_Hoskatta   │         │     Groq API      │
           │                   │         │                   │
           │  PDF Extraction   │         │ Llama 3.3 70B     │
           └─────────┬─────────┘         └─────────┬─────────┘
@@ -270,7 +270,7 @@ Home
 HireMeAI/
 │
 ├── backend/
-│   ├── DevResume.pdf
+│   ├── Nikhil_Hoskatta_Resume.pdf
 │   └── main.py
 │
 ├── frontend/
